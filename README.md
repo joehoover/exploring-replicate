@@ -1,13 +1,14 @@
 # exploring-replicate
 
-Taking replicate ai for a test run. This just spins up an instance of the HuggingFace Transformers `zero-shot-classification` pipeline with a large `BART` model that's been fine-tuned on NLI. It's an old approach as far as zero shot inference is concerned, but it's also small and fast. 
+
+This spins up an instance of the HuggingFace Transformers `zero-shot-classification` pipeline with a large `BART` model that's been fine-tuned on NLI. It's an old approach (see [here](https://huggingface.co/facebook/bart-large-mnli?candidateLabels=mobile%2C+website%2C+billing%2C+account+access&multiClass=true&text=Last+week+I+upgraded+my+iOS+version+and+ever+since+then+my+phone+has+been+overheating+whenever+I+use+your+app.)) as far as zero shot inference is concerned, but it's also small and fast, compared to today's large models. 
 
 The model formulates sequence classification as an NLI problem. Given a set of class labels, an input sequence, and a hypothesis template: 
 
 1. A hypothesis is constructed for each label by piping labels into the hypothesis template.
 2. Each hypothesis is appended to the user input, yielding the complete input sequence
 3. The input sequence is passed to the NLI model, which then predicts whether the 
-hypothesis contradicts, entails, or is irrelevent to the user input (i.e. the premise). 
+hypothesis contradicts, entails, or is irrelevant to the user input (i.e. the premise). 
 4. Entailment logits associated with each hypothesis--remember, a hypothesis is constructed for each label--are then normalized with a softmax to yield the final scores over labels that are returned in the output.  
 
 Outputs are returned as a dictionary with three keys: 

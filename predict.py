@@ -31,16 +31,16 @@ class Predictor(BasePredictor):
     def predict(
         self,
         input: str = Input(
-            description = "Text sequence to classify",
-            default = "I ate the most delicious plum yesterday!",
+            description = "Text sequence to classify.",
+            default = "Replicate, I think I might...like you a lot!",
         ),
         class_labels: str = Input(
-            description = "Class names. Must be either a comma-delimited string or a list of strings",
+            description = "Class names. Must be a comma-delimited string of labels.",
             default = "positive, negative, neutral",
         ),
         multi_label: bool = Input(
             description = "If True, then class scores are independent.",
-            default = True
+            default = False
         ),
         hypothesis_template: str = Input(
             description = "Hypothesis into which class labels are piped. Must contain '{}'.",
