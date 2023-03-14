@@ -51,4 +51,5 @@ class Predictor(BasePredictor):
 
         class_labels = [i.strip() for i in class_labels.split(',')]
         result = self.classifier(input, class_labels, hypothesis_template=hypothesis_template, multi_label=multi_label)
+        result["hypothesis_template"] = hypothesis_template
         return result
