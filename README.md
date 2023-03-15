@@ -1,6 +1,19 @@
 # exploring-replicate
 
 
+## Note
+
+I've modified `predict.py` to use onnx runtime; however, I have not gotten any version of my cog model to run on replicate.ai. So, the ONNX version is currently untested. However, it is working locally.
+
+To export the model to ONNX:
+
+```
+pip install optimum[exporters]
+optimum-cli export onnx --model model/ --task sequence-classification bart_large_mnli_onnx/
+```
+
+##
+
 This spins up an instance of the HuggingFace Transformers `zero-shot-classification` pipeline with a large `BART` model that's been fine-tuned on NLI. It's an old approach (see [here](https://huggingface.co/facebook/bart-large-mnli?candidateLabels=mobile%2C+website%2C+billing%2C+account+access&multiClass=true&text=Last+week+I+upgraded+my+iOS+version+and+ever+since+then+my+phone+has+been+overheating+whenever+I+use+your+app.)) as far as zero shot inference is concerned, but it's also small and fast, compared to today's large models. 
 
 The model formulates sequence classification as an NLI problem. Given a set of class labels, an input sequence, and a hypothesis template: 

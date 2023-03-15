@@ -7,20 +7,24 @@ import torch
 
 import os
 
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+from transformers import AutoTokenizer#, AutoModelForSequenceClassification, pipeline
+from optimum.onnxruntime import ORTModelForSequenceClassification
+from optimum.pipelines import pipeline
 
 MODEL_REPO = "facebook/bart-large-mnli"
 LOCAL_MODEL_DIR = './model'
+LOCAL_ONNX_MODEL_DIR = "./bart_large_mnli_onnx/"
+
+
 
 class Predictor(BasePredictor):
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.model = AutoModelForSequenceClassification.from_pretrained(LOCAL_MODEL_DIR)
+        # self.model = AutoModelForSequenceClassification.from_pretrained(LOCAL_MODEL_DIR)
+        self.model = ORTModelForSequenceClassification.from_pretrained(LOCAL_ONNX_MODEL_DIR)
         self.tokenizer = AutoTokenizer.from_pretrained(LOCAL_MODEL_DIR)
-        self.model.to(self.device)
-
 
         self.classifier = pipeline("zero-shot-classification",
             model = self.model,
