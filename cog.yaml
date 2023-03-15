@@ -22,7 +22,7 @@ build:
   
   # commands run after the environment is setup
   # run:
-    # - "echo env is ready!"
+    # - chmod +x /scripts/download_weights
     # - "echo another command if needed"
 
 # predict.py defines how predictions are run on your model

@@ -2,19 +2,25 @@
 
 import os
 import shutil
-
+from distutils.dir_util import copy_tree
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from huggingface_hub import snapshot_download
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 MODEL_REPO = "facebook/bart-large-mnli"
-CACHE_DIR = 'weights'
-# snapshot_download(
-#     repo_id=MODEL_REPO, 
-#     allow_patterns=["*.bin", "*.json", "*.md"],
-#     local_dir = CACHE_DIR,
-#     cache_dir = CACHE_DIR,
-#     local_dir_use_symlinks="auto",
-#     )
+LOCAL_MODEL_DIR = './model'
 
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_REPO, cache_dir=CACHE_DIR)
-tokenizer = AutoTokenizer.from_pretrained(MODEL_REPO, cache_dir=CACHE_DIR)
+if os.path.exists(LOCAL_MODEL_DIR):
+    shutil.rmtree(LOCAL_MODEL_DIR)
+
+# setup temporary directory
+with TemporaryDirectory() as tmpdir:
+    # download snapshot
+    snapshot_dir = snapshot_download(
+        repo_id=MODEL_REPO, 
+        cache_dir=tmpdir,
+        allow_patterns=["*.bin", "*.json", "*.md"],
+    )
+    # copy snapshot to model dir
+    copy_tree(snapshot_dir, str(LOCAL_MODEL_DIR))
+

@@ -9,16 +9,16 @@ import os
 
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
-# CACHE_DIR = 'weights/models--facebook--bart-large-mnli/snapshots/9fc9c4e1808b5613968646fa771fc43fb03995f2/'
-CACHE_DIR = "./weights/models--facebook--bart-large-mnli/snapshots/9fc9c4e1808b5613968646fa771fc43fb03995f2/"
+MODEL_REPO = "facebook/bart-large-mnli"
+LOCAL_MODEL_DIR = './model'
 
 class Predictor(BasePredictor):
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient"""
 
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.model = AutoModelForSequenceClassification.from_pretrained("facebook/bart-large-mnli", cache_dir=CACHE_DIR)
-        self.tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-mnli", cache_dir=CACHE_DIR)
+        self.model = AutoModelForSequenceClassification.from_pretrained(LOCAL_MODEL_DIR)
+        self.tokenizer = AutoTokenizer.from_pretrained(LOCAL_MODEL_DIR)
         self.model.to(self.device)
 
 
